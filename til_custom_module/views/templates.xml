@@ -81,9 +81,6 @@
                                         <th name="th_product">
                                             <strong>Product</strong>
                                         </th>
-                                        <th name="th_dn_number">
-                                            <strong>DN Number</strong>
-                                        </th>
                                         <th name="th_cartoon_number">
                                             <strong>Cartoon Number</strong>
                                         </th>
@@ -117,9 +114,6 @@
                                                     <span t-field="ml.product_id.display_name"/>
                                                     <br/>
                                                     <span t-field="ml.product_id.description_picking"/>
-                                                </td>
-                                                <td>
-                                                    <span t-esc="move.dn_serial_number"/>
                                                 </td>
                                                 <td>
                                                     <span t-esc="move.carton_no"/>
