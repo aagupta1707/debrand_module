@@ -8,6 +8,10 @@ class StockMoveInherit(models.Model):
 
     carton_no = fields.Char('Carton Number')
 
+class StockMoveLineInherit(models.Model):
+    _inherit = 'stock.move.line'
+
+    carton_no = fields.Char('Carton Number')
 
 class SaleOrderInherit(models.Model):
     _inherit = 'sale.order'

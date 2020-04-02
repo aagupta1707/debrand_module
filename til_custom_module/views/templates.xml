@@ -116,7 +116,7 @@
                                                     <span t-field="ml.product_id.description_picking"/>
                                                 </td>
                                                 <td>
-                                                    <span t-esc="move.carton_no"/>
+                                                    <span t-esc="ml.carton_no"/>
                                                 </td>
                                                 <td>
                                                     <span t-if="o.state != 'done'" t-field="ml.product_uom_qty"/>
