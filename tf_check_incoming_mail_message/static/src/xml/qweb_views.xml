@@ -1,0 +1,13 @@
+<templates>
+    <t t-name="FetchNow.tffetch_now_button">
+        <button t-if="widget and widget.modelName == 'mail.call.trigger'" type="button" class="btn btn-secondary o_button_tf_fetch_now">
+            Fetch Now
+        </button>
+    </t>
+    <t t-extend="ImportView.import_button">
+        <t t-jquery="button.o_button_import" t-operation="after">
+            <t t-call="FetchNow.tffetch_now_button"/>
+        </t>
+    </t>
+
+</templates>

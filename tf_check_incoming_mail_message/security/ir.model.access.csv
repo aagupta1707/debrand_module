@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mail_call_trigger,accessmail_call_trigger,model_mail_call_trigger,,1,1,1,1

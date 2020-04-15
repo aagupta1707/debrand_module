@@ -8,6 +8,12 @@ from odoo import api, fields, models, tools, _
 from odoo.exceptions import UserError
 import os
 import requests
+from email.message import Message
+from odoo.osv import expression
+
+from odoo.tools import pycompat, ustr
+from odoo.tools.misc import clean_context, split_every
+from odoo.tools.safe_eval import safe_eval
 import base64
 import datetime
 import dateutil
@@ -31,13 +37,6 @@ from email.message import Message
 from lxml import etree
 from werkzeug import url_encode
 from werkzeug import urls
-
-from odoo import _, api, exceptions, fields, models, tools, registry, SUPERUSER_ID
-from odoo.osv import expression
-
-from odoo.tools import pycompat, ustr
-from odoo.tools.misc import clean_context, split_every
-from odoo.tools.safe_eval import safe_eval
 
 _logger = logging.getLogger(__name__)
 MAX_POP_MESSAGES = 50
@@ -92,36 +91,10 @@ class FetchMailServerInherit(models.Model):
                         pop_server = server.connect()
                         (num_messages, total_size) = pop_server.stat()
                         pop_server.list()
+                        # num_messages = 1
                         for num in range(1, min(MAX_POP_MESSAGES, num_messages) + 1):
                             (header, messages, octets) = pop_server.retr(num)
                             message = (b'\n').join(messages)
-                            # message = message.decode("utf-8")
-                            # if(message.find('Subject') != -1):
-                            #     url_domain = self.env['ir.config_parameter'].search(
-                            #         [('key', '=', 'web.base.url')]).value
-                            #     attachment_ids = self.env['ir.attachment'].search([('id','=',23)])
-                            #     attachment_link = url_domain + "/web/content/" + str(attachment_ids.id) + "/" + attachment_ids.name
-                            #     message = message.split()
-                            #     print('========YES===========',attachment_link)
-                            #     subs = 'emergency'
-                            #     for i in message:
-                            #         i = i.upper()
-                            #         if subs.upper() in i or subs.lower() in i:
-                            #             sms = 'http://api.accessyou.com/voice/send.php?' + 'accountno=' + str(
-                            #                 32001030) + '&' + 'pwd=' + str(92072454) + '&' + 'phone=' + str(
-                            #                 85292072454) + '&' + 'wavfile=' + 'http://ivrs1.accessyou.com/voice_broadcast/1234.wav'
-                            #                                                   # sms2 = 'http://api.accessyou.com/voice/upload_wav.php?'+'accountno='+str(
-                            #             #     32001030) + '&' + 'pwd=' + str(92072454) + '&' +  '&' +'wavfile='+str(888)+'&'+'wav_url='+'https://g711.org/ready/1234-1586857441.wav '
-                            #
-                            #
-                            #             print(sms,'===============sms')
-                            #             # print(sms2, '===============sms2')
-                            #             val = requests.get(sms)
-                            #             # val1 = requests.get(sms2)
-                            #             print(val,'===========val')
-                            #             # print(val1, '===========val1')
-                            #             _logger.info('Program finished')
-                            #     # res = [i for i in message if subs in i]
                             res_id = None
                             try:
                                 res_id = MailThread.with_context(**additionnal_context).message_process(server.object_id.model, message, save_original=server.original, strip_attachments=(not server.attach))
@@ -207,11 +180,12 @@ class MailThreadInherit(models.AbstractModel):
         # for all the odd MTAs out there, as there is no standard header for the envelope's `rcpt_to` value.
         rcpt_tos_localparts = [e.split('@')[0].lower() for e in tools.email_split(message_dict['recipients'])]
         sub = 'EMERGENCY'
-        if email_from == 'outgoing987@gmail.com' and (sub in (message_dict['subject']).upper()):
-            sms = 'http://api.accessyou.com/voice/send.php?' + 'accountno=' + str(32001030) + '&' + 'pwd=' + str(92072454) + '&' + 'phone=' + str(
-                                                        85292072454) + '&' + 'wavfile=' + '1234.wav'
-
-            val = requests.get(sms)
+        # if email_from == 'outgoing987@gmail.com' and (sub in (message_dict['Subject']).upper()):
+        #     sms = 'http://api.accessyou.com/voice/send.php?' + 'accountno=' + str(32001030) + '&' + 'pwd=' + str(92072454) + '&' + 'phone=' + str(
+        #                                                 85292072454) + '&' + 'wavfile=' + 'http://ivrs1.accessyou.com/voice_broadcast/1234.wav'
+        #
+        #     val = requests.get(sms)
+        #     print(val,'============val')
         # 0. Handle bounce: verify whether this is a bounced email and use it to collect bounce data and update notifications for customers
         #    Bounce regex: typical form of bounce is bounce_alias+128-crm.lead-34@domain
         #       group(1) = the mail ID; group(2) = the model (if any); group(3) = the record ID

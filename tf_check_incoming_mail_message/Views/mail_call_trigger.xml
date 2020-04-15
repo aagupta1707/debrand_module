@@ -1,0 +1,57 @@
+<odoo>
+    <data>
+        <record id="mail_call_trigger_tree_view" model="ir.ui.view">
+            <field name="name">mail call trigger</field>
+            <field name="model">mail.call.trigger</field>
+            <field name="arch" type="xml">
+                <tree string="Mail Call Trigger">
+                    <field name="trigger_time"/>
+                    <field name="email_to"/>
+                    <field name="mail_subject"/>
+                    <field name="mail_body"/>
+                    <field name="status"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="mail_call_trigger_form_view" model="ir.ui.view">
+            <field name="name">mail call trigger form view</field>
+            <field name="model">mail.call.trigger</field>
+            <field name="arch" type="xml">
+                <form string="Mail Call Trigger">
+                    <sheet>
+                        <group col="4">
+                            <field name="trigger_time"/>
+                            <field name="email_to"/>
+                            <field name="mail_subject"/>
+                            <field name="status"/>
+                        </group>
+                        <group>
+                            <field name="mail_body"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_mail_call_trigger" model="ir.actions.act_window">
+            <field name="name">Mail Call Trigger</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">mail.call.trigger</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="mail_call_trigger_tree_view"/>
+        </record>
+
+        <!-- This Menu Item will appear in the Upper bar, That's why It needs NO parent or action -->
+        <menuitem id="tf_check_incoming_mail_message_root" name="Call Trigger"/>
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="tf_check_incoming_mail_message_categ" name="Mail Call Record" parent="tf_check_incoming_mail_message_root" action="action_mail_call_trigger" sequence=""/>
+
+        <template id="tf_assets_backend" name="Fetch Now Assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/tf_check_incoming_mail_message/static/src/js/fetch_now.js"></script>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>
