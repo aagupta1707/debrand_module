@@ -9,8 +9,8 @@
         Voice Alert When In Subject Emergency is found in the Incoming mail
     """,
 
-    'author': "Ayush Gupta",
-    'website': "http://www.theerpstore.com",
+    'author': "TilSol Technology",
+    'website': "http://www.tilsol.com",
 
     'category': 'Mail',
     'version': '13.0.1',
