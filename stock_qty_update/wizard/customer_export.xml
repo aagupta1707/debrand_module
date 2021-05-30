@@ -1,0 +1,35 @@
+<odoo>
+    <data>
+        <record id="update_customer_view12" model="ir.ui.view">
+            <field name="name">update customer view</field>
+            <field name="model">customer.export</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="file" filename="file_name"/>
+                        <field name="file_name" invisible="1"/>
+                    </group>
+                    <footer>
+                        <button class="btn-primary" name="create_stock_cptwh" string="CPTWH Data"
+                                type="object"/>
+                        <button class="btn-primary" name="create_stock_jhbwh" string="JHBWH Data"
+                                type="object"/>
+                        <button class="btn-default" special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_wizard_update_customer_view222" model="ir.actions.act_window">
+            <field name="name">Update Stock Data</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">customer.export</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="update_customer_view12"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="challan_customer_receipt_menu2" name="Import Data" parent="base.menu_administration"
+                  action="action_wizard_update_customer_view222" sequence="20"/>
+    </data>
+</odoo>

@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_iq_export_data,iq_custom_data_import.export,model_customer_export,base.group_user,1,1,1,1
